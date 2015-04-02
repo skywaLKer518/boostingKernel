@@ -78,5 +78,5 @@ stats.err_tr = [stats.err_tr mean(pred_tr~=y_tr')];
 [~,pred_va] = max(stats.score_va);
 stats.err_va = [stats.err_va mean(pred_va~=y_va')];
 
-fprintf('\t\ttraining error: %f\n\t\tvalidation error: %f\n\n',stats.err_tr,stats.err_va);
+fprintf('\t\t%d: training error: %f\n\t\tvalidation error: %f\n\n',N,stats.err_tr(end),stats.err_va(end));
 
