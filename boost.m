@@ -3,7 +3,7 @@ NUM_ITER = 5;
 BATCH_SIZE = 50;
 LEARNING_RATE = 1;
 % NUM_MODEL = 100;
-fprintf('input NUM_MODEL\n')
+fprintf('input NUM_MODEL, DEVICE\n')
 keyboard
 %%
 
@@ -30,7 +30,7 @@ hypers.no_classes = max(y_tr);
 hypers.nIters = NUM_ITER;
 hypers.batch_size = BATCH_SIZE;
 hypers.learning_rate = LEARNING_RATE;
-
+hypers.device = DEVICE;
 %%
 stats.score_tr = zeros(hypers.no_classes,no_tr);
 stats.score_va = zeros(hypers.no_classes,no_va);
@@ -50,7 +50,7 @@ weight = ones(1,no_tr) * 1/no_tr;
 
 for i = 1:NUM_MODEL
     fprintf('%d -- ',i)
-    model= train_net(x_tr,y_tr,weight,hypers);
+    model= train_net_gpu(x_tr,y_tr,weight,hypers);
     M{i} = model;
     [weight] = updateWeigts(weight,y_tr,model.pred,model.alpha);
     stats = eval_model(x_tr,y_tr,x_va,y_va,i,model,stats);
