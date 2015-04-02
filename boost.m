@@ -2,7 +2,7 @@ NUM_HIDDEN = 5;
 NUM_ITER = 5;
 BATCH_SIZE = 50;
 LEARNING_RATE = 1;
-NUM_MODEL = 5;
+NUM_MODEL = 100;
 %%
 
 fprintf('loading data\n')
