@@ -9,6 +9,8 @@ unif_value = sqrt(6/(d+K));
 V = unifrnd(-unif_value,unif_value,H,d);  % e.g. d = 784+1 = 785
 W = zeros(K,H+1);
 
+batch_size_eval = 5000;
+n_batch_eval = ceil(n/batch_size_eval);
 % Z1 = ones(H,batch_size);
 % X2 = ones(H+1,batch_size);
 
@@ -41,8 +43,6 @@ gX2 = gpuArray.ones(H+1,batch_size);
 % delta2 = gpuArray.zeros(H+1,batch_size);
 % gH2 = gpuArray.zeros(H+1,batch_size);
 
-batch_size_eval = 5000;
-n_batch_eval = ceil(n/batch_size_eval);
 
 gZ1_eval = gpuArray.ones(H,batch_size_eval);
 gX2_eval = gpuArray.ones(H+1,batch_size_eval);
