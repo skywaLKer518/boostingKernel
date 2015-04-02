@@ -58,7 +58,7 @@ for i = 1:NUM_MODEL
 end
 total_time = toc;
 
-name = ['res_iter'  num2str(NUM_ITER) '_lr' num2str(LEARNING_RATE) ...
+name = ['output/res_iter'  num2str(NUM_ITER) '_lr' num2str(LEARNING_RATE) ...
     '_N' num2str(NUM_MODEL) '_hid' num2str(NUM_HIDDEN)];
 clearvars  x_tr x_va y_tr y_va no_tr no_va
 save(name)
