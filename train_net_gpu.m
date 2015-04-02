@@ -17,7 +17,7 @@ n_batch = ceil(n / batch_size);
 % y_batch = zeros(K,batch_size);
 
 Y = sparse(double(y), 1:double(n), ones(n, 1), double(K), n); 
-prediction = zeros(1,n);
+
 
 batch_size_eval = 5000;
 n_batch_eval = ceil(n/batch_size_eval);
@@ -34,6 +34,8 @@ fprintf('\nGPU Detected (%s, %d multiprocessors, Compute Capability %s, Mem %d) 
 
 gV = gpuArray(single(V));
 gW = gpuArray(single(W));
+
+prediction = gpuArray.zeros(1,n);
 
 gX_batch = gpuArray.zeros(d,batch_size);
 gY_batch = gpuArray.zeros(K,batch_size);
