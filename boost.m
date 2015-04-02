@@ -2,7 +2,9 @@ NUM_HIDDEN = 5;
 NUM_ITER = 5;
 BATCH_SIZE = 50;
 LEARNING_RATE = 1;
-NUM_MODEL = 100;
+% NUM_MODEL = 100;
+fprintf('input NUM_MODEL\n')
+keyboard
 %%
 
 fprintf('loading data\n')
@@ -47,11 +49,10 @@ weight = ones(1,no_tr) * 1/no_tr;
 %%
 
 for i = 1:NUM_MODEL
+    fprintf('%d -- ',i)
     model= train_net(x_tr,y_tr,weight,hypers);
     M{i} = model;
     [weight] = updateWeigts(weight,y_tr,model.pred,model.alpha);
     stats = eval_model(x_tr,y_tr,x_va,y_va,i,model,stats);
     
-%     keyboard
-%     eval_model(x_tr,y_tr,x_va,y_va,i,M);
 end
