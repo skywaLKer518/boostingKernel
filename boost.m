@@ -50,11 +50,12 @@ weight = ones(1,no_tr) * 1/no_tr;
 %%
 tic
 for i = 1:NUM_MODEL
-    fprintf('%d -- ',i)
+    fprintf('%d (%d,%d,%f)-- ',i,NUM_ITER,NUM_HIDDEN,LEARNING_RATE);
     model= train_net(x_tr,y_tr,weight,hypers);
     M{i} = model;
     [weight] = updateWeigts(weight,y_tr,model.pred,model.alpha);
     stats = eval_model(x_tr,y_tr,x_va,y_va,i,model,stats); 
+    
 end
 total_time = toc;
 
