@@ -83,7 +83,7 @@ for i = 1:n_epoch
         gX2(2:end,1:mb_size) = 1./(1+exp(-gZ1(:,1:mb_size)));
         
 %         Z2 = W * X2;
-        gZ2 = gW * gX2(2:end,1:mb_size);
+        gZ2 = gW * gX2(:,1:mb_size);
         
         P = bsxfun(@minus,gZ2,max(gZ2));
         P = exp(P);
@@ -125,7 +125,7 @@ for i = 1:n_epoch
         % feedforward
         gZ1_eval(:,1:mb_size) = V * gX_batch_eval(:,1:mb_size);  % Z1: (1+H) by n
         gX2_eval(2:end,1:mb_size) = 1./(1+exp(-gZ1_eval(:,1:mb_size)));   % X2 same as Z1)
-        gZ2_eval = gW * gX2_eval;
+        gZ2_eval = gW * gX2_eval(:,1:mb_size);
 
         [~,pred] = max(gZ2_eval(:,1:mb_size));
         w_batch = weight(firstInd:lastInd);
