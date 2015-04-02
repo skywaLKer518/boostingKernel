@@ -1,30 +1,25 @@
 function [model] = train_net_gpu(x,y,weight,hypers)
-
 % train a one hidden layer neural nets 
 % on \{(x_i,y_i)\}_n ~ weight
 
 [n,d,K,H,n_epoch,batch_size,l_rate,device] = getHypers(hypers);
+n_batch = ceil(n / batch_size);
 
 unif_value = sqrt(6/(d+K));
 V = unifrnd(-unif_value,unif_value,H,d);  % e.g. d = 784+1 = 785
-
 W = zeros(K,H+1);
+
 % Z1 = ones(H,batch_size);
 % X2 = ones(H+1,batch_size);
 
-n_batch = ceil(n / batch_size);
 % x_batch = zeros(d,batch_size);
 % y_batch = zeros(K,batch_size);
 
 Y = sparse(double(y), 1:double(n), ones(n, 1), double(K), n); 
 
-
-batch_size_eval = 5000;
-n_batch_eval = ceil(n/batch_size_eval);
-
-% x_batch_eval = zeros(d,batch_size_eval);
-% Z1_eval = ones(H,batch_size_eval);
-% X2_eval = ones(H+1,batch_size_eval);
+x_batch_eval = zeros(d,batch_size_eval);
+Z1_eval = ones(H,batch_size_eval);
+X2_eval = ones(H+1,batch_size_eval);
 
 dev = gpuDevice(device);
 hyperindex = 1;
@@ -45,6 +40,9 @@ gX2 = gpuArray.ones(H+1,batch_size);
 % delta3 = gpuArray.zeros(K,batch_size);
 % delta2 = gpuArray.zeros(H+1,batch_size);
 % gH2 = gpuArray.zeros(H+1,batch_size);
+
+batch_size_eval = 5000;
+n_batch_eval = ceil(n/batch_size_eval);
 
 gZ1_eval = gpuArray.ones(H,batch_size_eval);
 gX2_eval = gpuArray.ones(H+1,batch_size_eval);
@@ -122,10 +120,12 @@ for i = 1:n_epoch
         mb_size = lastInd - firstInd + 1;
         
         gX_batch_eval(:,1:mb_size) = x(:,firstInd:lastInd); % d by n
+        x_batch_eval(:,1:mb_size) = x(:,firstInd:lastInd);
+%         dif1 = norm(gather(gX_bath_eval) - x_batch_eval);
         yb = y(firstInd:lastInd);
         
         % feedforward
-        gZ1_eval(:,1:mb_size) = V * gX_batch_eval(:,1:mb_size);  % Z1: (1+H) by n
+        gZ1_eval(:,1:mb_size) = gV * gX_batch_eval(:,1:mb_size);  % Z1: (1+H) by n
         gX2_eval(2:end,1:mb_size) = 1./(1+exp(-gZ1_eval(:,1:mb_size)));   % X2 same as Z1)
         gZ2_eval = gW * gX2_eval(:,1:mb_size);
 
