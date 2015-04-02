@@ -32,6 +32,8 @@ hypers.learning_rate = LEARNING_RATE;
 %%
 stats.score_tr = zeros(hypers.no_classes,no_tr);
 stats.score_va = zeros(hypers.no_classes,no_va);
+stats.err_tr = [];
+stats.err_va = [];
 
 M = cell(NUM_MODEL,1);
 weight = ones(1,no_tr) * 1/no_tr;
